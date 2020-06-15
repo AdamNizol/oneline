@@ -1,5 +1,16 @@
 <template>
   <div class="mazeContainer">
+    <div class="controls">
+      <p>Path Colour:</p>
+      <input type="color" v-model="pathCol" />
+
+      <p>Wall Colour:</p>
+      <input type="color" v-model="wallCol" />
+
+      <p>Line Colour:</p>
+      <input type="color" v-model="lineCol" />
+    </div>
+
     <div class="row">
       <MazeView :value="maze" />
       <div class="svgRep">
@@ -13,12 +24,12 @@
 
     <div class="overlaid">
 
-      <MazeView :value="maze" openColour="red" closedColour="rgb(60,0,0)" />
+      <MazeView :value="maze" :openColour="pathCol" :closedColour="wallCol" />
       <div class="svgRepOverlay">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
           <path v-for="n in Math.floor(path.length/2)"
           :d="'M ' + path[(n-1)*2][0]+ ' ' + path[(n-1)*2][1] + ' Q '+ path[(n-1)*2+1][0] +' '+ path[(n-1)*2+1][1] +' '+ path[(n-1)*2+2][0] +' '+ path[(n-1)*2+2][1]"
-          stroke="pink" stroke-width="1" fill="none" :key="n" />
+          :stroke="lineCol" stroke-width="1" fill="none" :key="n" />
         </svg>
       </div>
 
@@ -39,7 +50,10 @@ export default {
   },
   data(){
     return {
-      maze: MazeGenerator.generateMaze(43, 43)
+      maze: MazeGenerator.generateMaze(43, 43),
+      pathCol: '#D01F1F',
+      wallCol: '#400A0A',
+      lineCol: '#FFC0CB'
     }
   },
   computed: {
@@ -119,8 +133,9 @@ export default {
 }
 .row {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
 }
 .svgRep{
   width: 400px;
@@ -137,5 +152,14 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+.controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  >p {
+      font-weight: bold;
+  }
 }
 </style>
