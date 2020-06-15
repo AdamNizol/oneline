@@ -1,0 +1,9 @@
+1. use maze algorithm to generate one maze without loops and within a region
+2. trace perimeter of maze (optionally with rounded lines)
+
+
+resources:
+https://en.wikipedia.org/wiki/Maze_generation_algorithm
+-Recursive maze generation looks promising for region defining
+
+inspired by: https://www.reddit.com/user/tfoust10/
