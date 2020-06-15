@@ -1,4 +1,8 @@
 # oneline
+## Demo
+```
+https://adamnizol.github.io/oneline/
+```
 
 ## Project setup
 ```
