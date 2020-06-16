@@ -9,6 +9,8 @@
 
       <p>Line Colour:</p>
       <input type="color" v-model="lineCol" />
+
+      <button style="margin-left: 1em;" @click="newMaze">New</button>
     </div>
 
     <div class="row">
@@ -119,6 +121,11 @@ export default {
       return result;
       //return [ [10,10], [25,0], [50,50] ]
     },
+  },
+  methods: {
+    newMaze(){
+      this.maze = MazeGenerator.generateMaze(43, 43);
+    }
   }
 
 }
@@ -160,6 +167,7 @@ export default {
   justify-content: center;
   >p {
       font-weight: bold;
+      margin-left: 0.3em;
   }
 }
 </style>
