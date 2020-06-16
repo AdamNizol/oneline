@@ -24,8 +24,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .container {
-  width: 400px;
-  height: 400px;
+  width: min(400px, 100vw);
+  height: min(400px, 100vw);
   background-color: black;
   display: flex;
   flex-direction: column;

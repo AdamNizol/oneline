@@ -145,13 +145,13 @@ export default {
   justify-content: center;
 }
 .svgRep{
-  width: 400px;
-  height: 400px;
+  width: min(400px, 100vw);
+  height: min(400px, 100vw);
   background-color: rgb(100,100,130);
 }
 .svgRepOverlay{
-  width: 400px;
-  height: 400px;
+  width: min(400px, 100vw);
+  height: min(400px, 100vw);
   position: absolute;
 }
 .overlaid {
