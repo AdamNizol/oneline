@@ -14,40 +14,38 @@
     </div>
 
     <div class="row">
+      <InterpretedView />
       <MazeView :value="maze" />
       <div class="svgRep">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
-          <path :d="pathSvg" stroke="black" stroke-width="1" fill="none" :key="n" />
+          <path :d="pathSvg" stroke="black" stroke-width="1" fill="none" />
         </svg>
       </div>
-    </div>
 
-    <div class="row">
       <div class="overlaid">
-
         <MazeView :value="maze" :openColour="pathCol" :closedColour="wallCol" />
         <div class="svgRepOverlay">
           <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
-            <path :d="pathSvg" :stroke="lineCol" stroke-width="1" fill="none" :key="n" />
+            <path :d="pathSvg" :stroke="lineCol" stroke-width="1" fill="none" />
           </svg>
         </div>
 
       </div>
-
     </div>
 
   </div>
 </template>
 
 <script>
-import MazeView from './MazeView.vue'
+import MazeView from './MazeView.vue';
 import MazeGenerator from '@/MazeGenerator';
-import MazeScanner from '@/MazeScanner'
+import MazeScanner from '@/MazeScanner';
+import InterpretedView from './InterpretedView.vue';
 
 export default {
   name: 'OneLine',
   components: {
-    MazeView
+    MazeView, InterpretedView
   },
   data(){
     return {
@@ -156,6 +154,10 @@ export default {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
+  >* {
+    margin: 0px;
+    padding: 0px;
+  }
 }
 .svgRep{
   width: min(400px, 100vw);
