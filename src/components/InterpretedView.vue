@@ -12,30 +12,68 @@ export default {
     "vue-p5": VueP5
   },
   name: "InterpretedView",
+  props: ['mazeWidth', 'mazeHeight'],
   data(){
     return{
       p5sketch: null,
+      img: null,
+      imgSize: 400,
     }
   },
   methods: {
     setup(sketch) {
       this.p5sketch = sketch;
 
-      sketch.resizeCanvas(400, 400);
+      sketch.resizeCanvas(this.imgSize, this.imgSize);
       sketch.background("black");
-      let fileInput = sketch.createFileInput(this.importImg);
+      let fileInput = sketch.createFileInput((file) => {
+        this.img = sketch.createImg(file.data,'');
+        this.img.hide();
+        sketch.loop();
+      });
       fileInput.position(0,0);
-
+      sketch.noLoop();
     },
     draw(sketch) {
+      sketch.background("black");
+      sketch.strokeWeight(0)
+      if(this.img && this.img.width > 0){
+        sketch.noLoop();
+        let scale = this.imgSize/Math.max(this.img.width, this.img.height);
+        let size = {w: this.img.width*scale, h: this.img.height*scale}
+        sketch.image(this.img, (this.imgSize-size.w)/2, (this.imgSize-size.h)/2, size.w, size.h);
+        sketch.loadPixels();
+        let d = sketch.pixelDensity();
+        let unitSize = Math.ceil(this.imgSize/Math.min(this.mazeWidth, this.mazeHeight));
+        for(let xi = 0; xi < this.mazeWidth; xi++){
+          for(let yi = 0; yi < this.mazeHeight; yi++){
 
+            let pixSum = 0;
+            for(let xn = 0; xn < unitSize; xn++){
+              for(let yn = 0; yn < unitSize; yn++){
+                let index = this.getPixelIndex(xi*unitSize + xn, yi*unitSize + yn, this.imgSize, d);
+                for(let j=0; j<3; j++){
+                  let pixVal = (sketch.pixels[index+j]/255)
+                  pixSum += pixVal
+                  //console.log(sketch.pixels[index+j])
+                  //console.log(sketch.pixels[index+j])
+                }
+              }
+            }
+            if(pixSum > (unitSize*unitSize)/2 ){
+              sketch.rect(xi*(unitSize), yi*(unitSize), unitSize, unitSize)
+            }
+
+          }
+        }
+
+      }
     },
-    importImg(file){
-      console.log(file)
-      let img = this.p5sketch.createImg(file.data, '');
-      img.hide();
-      this.p5sketch.image(img,0,0,400,400);
-    }
+
+    getPixelIndex(x, y, cWidth, d){
+      return ( 4*( (cWidth*(y*d) ) + (x*d) ) )
+    },
+
   }
 };
 </script>

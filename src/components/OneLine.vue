@@ -1,20 +1,26 @@
 <template>
   <div class="mazeContainer">
     <div class="controls">
-      <p>Path Colour:</p>
-      <input type="color" v-model="pathCol" />
+      <div class="controlRow">
+        <p>Path Colour:</p>
+        <input type="color" v-model="pathCol" />
 
-      <p>Wall Colour:</p>
-      <input type="color" v-model="wallCol" />
+        <p>Wall Colour:</p>
+        <input type="color" v-model="wallCol" />
 
-      <p>Line Colour:</p>
-      <input type="color" v-model="lineCol" />
+        <p>Line Colour:</p>
+        <input type="color" v-model="lineCol" />
 
-      <button style="margin-left: 1em;" @click="newMaze">New</button>
+        <button style="margin-left: 1em;" @click="newMaze">New</button>
+      </div>
+
+      <p>Detail:</p>
+      <input type="range" v-model="mazeDetail" min="31" max="61" step="2"  style="width:400px"/>
+
     </div>
 
     <div class="row">
-      <InterpretedView />
+      <InterpretedView :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" />
       <MazeView :value="maze" />
       <div class="svgRep">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
@@ -48,8 +54,10 @@ export default {
     MazeView, InterpretedView
   },
   data(){
+    let mazeDetail = 47;
     return {
-      maze: MazeGenerator.generateMaze(43, 43),
+      maze: MazeGenerator.generateMaze(mazeDetail, mazeDetail),
+      mazeDetail: mazeDetail,
       pathCol: '#D01F1F',
       wallCol: '#400A0A',
       lineCol: '#FFC0CB'
@@ -132,10 +140,16 @@ export default {
       return result;
     },
 
+    mazeWidth: function(){
+      return this.mazeDetail
+    },
+    mazeHeight: function(){
+      return this.mazeDetail
+    },
   },
   methods: {
     newMaze(){
-      this.maze = MazeGenerator.generateMaze(43, 43);
+      this.maze = MazeGenerator.generateMaze(this.mazeWidth, this.mazeHeight);
     }
   }
 
@@ -177,12 +191,20 @@ export default {
 }
 .controls {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  >p {
+  p {
       font-weight: bold;
       margin-left: 0.3em;
+  }
+  >p {
+    margin: 0;
+  }
+  .controlRow{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>
