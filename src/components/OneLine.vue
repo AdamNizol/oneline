@@ -17,22 +17,21 @@
       <MazeView :value="maze" />
       <div class="svgRep">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
-          <path v-for="n in Math.floor(path.length/2)"
-          :d="'M ' + path[(n-1)*2][0]+ ' ' + path[(n-1)*2][1] + ' Q '+ path[(n-1)*2+1][0] +' '+ path[(n-1)*2+1][1] +' '+ path[(n-1)*2+2][0] +' '+ path[(n-1)*2+2][1]"
-          stroke="black" stroke-width="1" fill="none" :key="n" />
+          <path :d="pathSvg" stroke="black" stroke-width="1" fill="none" :key="n" />
         </svg>
       </div>
     </div>
 
-    <div class="overlaid">
+    <div class="row">
+      <div class="overlaid">
 
-      <MazeView :value="maze" :openColour="pathCol" :closedColour="wallCol" />
-      <div class="svgRepOverlay">
-        <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
-          <path v-for="n in Math.floor(path.length/2)"
-          :d="'M ' + path[(n-1)*2][0]+ ' ' + path[(n-1)*2][1] + ' Q '+ path[(n-1)*2+1][0] +' '+ path[(n-1)*2+1][1] +' '+ path[(n-1)*2+2][0] +' '+ path[(n-1)*2+2][1]"
-          :stroke="lineCol" stroke-width="1" fill="none" :key="n" />
-        </svg>
+        <MazeView :value="maze" :openColour="pathCol" :closedColour="wallCol" />
+        <div class="svgRepOverlay">
+          <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
+            <path :d="pathSvg" :stroke="lineCol" stroke-width="1" fill="none" :key="n" />
+          </svg>
+        </div>
+
       </div>
 
     </div>
@@ -121,6 +120,20 @@ export default {
       return result;
       //return [ [10,10], [25,0], [50,50] ]
     },
+
+    pathSvg: function(){
+      let result = "M ";
+      if(this.path.length > 1){
+        result += this.path[0][0] + ' ' + this.path[0][1];
+        result += " S ";
+        for(let i=1; i< this.path.length; i++){
+          result += this.path[i][0] + ' ' + this.path[i][1] + ' ';
+        }
+      }
+
+      return result;
+    },
+
   },
   methods: {
     newMaze(){
