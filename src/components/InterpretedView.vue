@@ -48,9 +48,9 @@ export default {
         sketch.background("black");
         let d = sketch.pixelDensity();
         let unitSize = Math.ceil(this.imgSize/Math.min(this.mazeWidth, this.mazeHeight));
-        for(let xi = 0; xi < this.mazeWidth; xi++){
+        for(let yi = 0; yi < this.mazeHeight; yi++){
           let shapeRow = []
-          for(let yi = 0; yi < this.mazeHeight; yi++){
+          for(let xi = 0; xi < this.mazeWidth; xi++){
 
             let pixSum = 0;
             for(let xn = 0; xn < unitSize; xn++){
@@ -72,7 +72,6 @@ export default {
           shape.push(shapeRow);
         }
 
-        console.table(shape)
         this.$emit("updateShape", shape);
       }
     },

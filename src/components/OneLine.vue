@@ -11,7 +11,7 @@
         <p>Line Colour:</p>
         <input type="color" v-model="lineCol" />
 
-        <button style="margin-left: 1em;" @click="newMaze">New</button>
+        <button style="margin-left: 1em;" @click="newMaze()">New</button>
       </div>
 
       <p>Detail:</p>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="row">
-      <InterpretedView :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" />
+      <InterpretedView :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" @updateShape="newMaze" />
       <MazeView :value="maze" :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" />
       <div class="svgRep">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
@@ -29,10 +29,9 @@
       </div>
 
       <div class="overlaid">
-        <MazeView :value="maze" :openColour="pathCol" :closedColour="wallCol" :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" />
-        <div class="svgRepOverlay">
+        <div class="svgRep" :style="'background-color: '+wallCol">
           <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
-            <path :d="pathSvg" :stroke="lineCol" stroke-width="1" fill="none" />
+            <path :d="pathSvg" :stroke="lineCol" stroke-width="1" :fill="pathCol" />
           </svg>
         </div>
 
@@ -70,10 +69,9 @@ export default {
       let unitH = 100/height;
       let unitW = 100/width;
 
-
       let mScan = new MazeScanner( ...this.getPathTile(this.maze) );
       let start = [mScan.x, mScan.y]
-      let result = [ [unitW, 1.5*unitH] ];
+      let result = [ [unitW*start[0], unitH*start[1]] ];
 
       let timesVisitingStart = 0;
       let timeVisitingStartRequired = 0;
@@ -99,21 +97,15 @@ export default {
 
         mScan.turn('left');
         while( (this.maze[ mScan.y + mScan.dir[1] ][ mScan.x + mScan.dir[0] ]) ){ //spot closed
-          //TODO: add points to result
           let p = mScan.getPoints();
           for(let i = 0; i< p.length; i++){
             p[i][0] = p[i][0]*unitW;
             p[i][1] = p[i][1]*unitH
           }
           result = result.concat(p);
-          //result.push([mScan.x*unitW, mScan.y*unitH]) //not right
-          //result.push([(mScan.x+0.5)*unitW, mScan.y*unitH]) //not right
           mScan.turn('right');
         }
         mScan.move();
-
-        //console.log(mScan.dir);
-        //mScan.turn('left');
       }
 
       mScan.turn('left');
@@ -123,7 +115,6 @@ export default {
         p[i][1] = p[i][1]*unitH
       }
       result = result.concat(p);
-
       return result;
       //return [ [10,10], [25,0], [50,50] ]
     },
@@ -149,8 +140,12 @@ export default {
     },
   },
   methods: {
-    newMaze(){
-      this.maze = MazeGenerator.generateMaze(this.mazeWidth, this.mazeHeight);
+    newMaze(maze = null){
+      if(maze){
+        this.maze = maze;
+      }else{
+        this.maze = MazeGenerator.generateMaze(this.mazeWidth, this.mazeHeight);
+      }
     },
     getPathTile(tiles){
       for(let i = 0; i < tiles.length; i++){

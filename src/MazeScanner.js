@@ -2,7 +2,7 @@ class MazeGenerator {
   constructor(x = 1, y = 1){
     this.x = x;
     this.y = y;
-    this.dir = [1,0];
+    this.dir = [0,-1];
   }
 
   turn(dir = 'right'){
