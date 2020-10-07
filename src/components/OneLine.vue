@@ -21,7 +21,7 @@
 
     <div class="row">
       <InterpretedView :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" />
-      <MazeView :value="maze" />
+      <MazeView :value="maze" :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" />
       <div class="svgRep">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
           <path :d="pathSvg" stroke="black" stroke-width="1" fill="none" />
@@ -29,7 +29,7 @@
       </div>
 
       <div class="overlaid">
-        <MazeView :value="maze" :openColour="pathCol" :closedColour="wallCol" />
+        <MazeView :value="maze" :openColour="pathCol" :closedColour="wallCol" :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" />
         <div class="svgRepOverlay">
           <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
             <path :d="pathSvg" :stroke="lineCol" stroke-width="1" fill="none" />
