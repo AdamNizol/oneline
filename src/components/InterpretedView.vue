@@ -43,6 +43,7 @@ export default {
         let size = {w: this.img.width*scale, h: this.img.height*scale}
         sketch.image(this.img, (this.imgSize-size.w)/2, (this.imgSize-size.h)/2, size.w, size.h);
         sketch.loadPixels();
+        sketch.background("black");
         let d = sketch.pixelDensity();
         let unitSize = Math.ceil(this.imgSize/Math.min(this.mazeWidth, this.mazeHeight));
         for(let xi = 0; xi < this.mazeWidth; xi++){
