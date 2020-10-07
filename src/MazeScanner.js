@@ -1,7 +1,7 @@
 class MazeGenerator {
-  constructor(){
-    this.x = 1;
-    this.y = 1;
+  constructor(x = 1, y = 1){
+    this.x = x;
+    this.y = y;
     this.dir = [1,0];
   }
 

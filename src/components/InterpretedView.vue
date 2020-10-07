@@ -36,9 +36,11 @@ export default {
     },
     draw(sketch) {
       sketch.background("black");
-      sketch.strokeWeight(0)
+      sketch.strokeWeight(0.25)
       if(this.img && this.img.width > 0){
         sketch.noLoop();
+        let shape = [];
+
         let scale = this.imgSize/Math.max(this.img.width, this.img.height);
         let size = {w: this.img.width*scale, h: this.img.height*scale}
         sketch.image(this.img, (this.imgSize-size.w)/2, (this.imgSize-size.h)/2, size.w, size.h);
@@ -47,6 +49,7 @@ export default {
         let d = sketch.pixelDensity();
         let unitSize = Math.ceil(this.imgSize/Math.min(this.mazeWidth, this.mazeHeight));
         for(let xi = 0; xi < this.mazeWidth; xi++){
+          let shapeRow = []
           for(let yi = 0; yi < this.mazeHeight; yi++){
 
             let pixSum = 0;
@@ -56,18 +59,21 @@ export default {
                 for(let j=0; j<3; j++){
                   let pixVal = (sketch.pixels[index+j]/255)
                   pixSum += pixVal
-                  //console.log(sketch.pixels[index+j])
-                  //console.log(sketch.pixels[index+j])
                 }
               }
             }
             if(pixSum > (unitSize*unitSize)/2 ){
+              shapeRow.push(0)
               sketch.rect(xi*(unitSize), yi*(unitSize), unitSize, unitSize)
+            }else{
+              shapeRow.push(1)
             }
-
           }
+          shape.push(shapeRow);
         }
 
+        console.table(shape)
+        this.$emit("updateShape", shape);
       }
     },
 

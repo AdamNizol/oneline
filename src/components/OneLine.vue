@@ -70,7 +70,8 @@ export default {
       let unitH = 100/height;
       let unitW = 100/width;
 
-      let mScan = new MazeScanner();
+
+      let mScan = new MazeScanner( ...this.getPathTile(this.maze) );
       let start = [mScan.x, mScan.y]
       let result = [ [unitW, 1.5*unitH] ];
 
@@ -150,6 +151,17 @@ export default {
   methods: {
     newMaze(){
       this.maze = MazeGenerator.generateMaze(this.mazeWidth, this.mazeHeight);
+    },
+    getPathTile(tiles){
+      for(let i = 0; i < tiles.length; i++){
+        for(let j = 0; j < tiles[i].length; j++){
+          if(!tiles[i][j]){ // path
+            return [j,i];
+          }
+        }
+      }
+
+      return [1, 1] //no path
     }
   }
 

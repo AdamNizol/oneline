@@ -23,7 +23,7 @@ class MazeGenerator {
     }
 
     this.populateSection(result, 1, 1, width-2, height-2);
-
+    
     return result;
    }
 
