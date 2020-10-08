@@ -30,6 +30,7 @@ export default {
         this.img = sketch.createImg(file.data,'');
         this.img.hide();
         sketch.loop();
+        fileInput.elt.value = null
       });
       fileInput.position(0,0);
       sketch.noLoop();

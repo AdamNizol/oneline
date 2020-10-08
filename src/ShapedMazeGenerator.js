@@ -54,16 +54,16 @@ class ShapedMazeGenerator {
 
    static getPossibleMoves(pos, visited){
      let result = [];
-     if(!visited[pos.y-2][pos.x]){
+     if( !(pos.y-2 < 0) && (visited[pos.y-2][pos.x] == 0) ){
        result.push({x:0, y:-2});
      }
-     if(!visited[pos.y+2][pos.x]){
+     if( !(pos.y+2 >= visited.length) && (visited[pos.y+2][pos.x] == 0) ){
        result.push({x:0, y:2});
      }
-     if(!visited[pos.y][pos.x-2]){
+     if( !(pos.x-2 < 0) && (visited[pos.y][pos.x-2] == 0) ){
        result.push({x:-2, y:0});
      }
-     if(!visited[pos.y][pos.x+2]){
+     if( !(pos.x+2 >= visited[pos.y].length) && (visited[pos.y][pos.x+2] == 0) ){
        result.push({x:2,y:0});
      }
      return result;

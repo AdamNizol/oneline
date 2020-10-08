@@ -11,11 +11,11 @@
         <p>Line Colour:</p>
         <input type="color" v-model="lineCol" />
 
-        <button style="margin-left: 1em;" @click="newMaze()">New</button>
+        <button style="margin-left: 1em;" @click="newMaze()">Refresh</button>
       </div>
 
       <p>Detail:</p>
-      <input type="range" v-model="mazeDetail" min="31" max="61" step="2"  style="width:400px"/>
+      <input type="range" v-model="mazeDetail" min="31" max="87" step="2"  style="width:400px"/>
 
     </div>
 
@@ -24,14 +24,14 @@
       <MazeView :value="maze" :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" />
       <div class="svgRep">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
-          <path :d="pathSvg" stroke="black" stroke-width="1" fill="none" />
+          <path :d="pathSvg" stroke="black" :stroke-width="1-(mazeDetail/220)" fill="none" />
         </svg>
       </div>
 
       <div class="overlaid">
         <div class="svgRep" :style="'background-color: '+wallCol">
           <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
-            <path :d="pathSvg" :stroke="lineCol" stroke-width="1" :fill="pathCol" />
+            <path :d="pathSvg" :stroke="lineCol" :stroke-width="1-(mazeDetail/220)" :fill="pathCol" />
           </svg>
         </div>
 
@@ -191,14 +191,14 @@ export default {
   flex-direction: row;
   justify-content: center;
   >* {
-    margin: 0px;
+    margin: 2px;
     padding: 0px;
   }
 }
 .svgRep{
   width: min(400px, 100vw);
   height: min(400px, 100vw);
-  background-color: rgb(100,100,130);
+  background-color: #ddd//rgb(100,100,130);
 }
 .svgRepOverlay{
   width: min(400px, 100vw);
