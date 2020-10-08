@@ -20,7 +20,7 @@
     </div>
 
     <div class="row">
-      <InterpretedView :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" @updateShape="newMaze" />
+      <InterpretedView :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" @updateShape="updateShape" />
       <MazeView :value="maze" :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" />
       <div class="svgRep">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
@@ -44,6 +44,7 @@
 <script>
 import MazeView from './MazeView.vue';
 import MazeGenerator from '@/MazeGenerator';
+import ShapedMazeGenerator from '@/ShapedMazeGenerator';
 import MazeScanner from '@/MazeScanner';
 import InterpretedView from './InterpretedView.vue';
 
@@ -59,7 +60,8 @@ export default {
       mazeDetail: mazeDetail,
       pathCol: '#D01F1F',
       wallCol: '#400A0A',
-      lineCol: '#FFC0CB'
+      lineCol: '#FFC0CB',
+      shape: null
     }
   },
   computed: {
@@ -144,7 +146,11 @@ export default {
       if(maze){
         this.maze = maze;
       }else{
-        this.maze = MazeGenerator.generateMaze(this.mazeWidth, this.mazeHeight);
+        if(this.shape){
+          this.updateShape(this.shape);
+        }else{
+          this.maze = MazeGenerator.generateMaze(this.mazeWidth, this.mazeHeight);
+        }
       }
     },
     getPathTile(tiles){
@@ -157,7 +163,16 @@ export default {
       }
 
       return [1, 1] //no path
-    }
+    },
+    updateShape(newShape){
+      this.shape = newShape
+
+      let shapeCopy = [];
+      for (let i = 0; i < newShape.length; i++){
+        shapeCopy[i] = newShape[i].slice();
+      }
+      this.newMaze( ShapedMazeGenerator.generateMaze( shapeCopy ) )
+    },
   }
 
 }

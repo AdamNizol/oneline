@@ -1,4 +1,4 @@
-class MazeGenerator {
+class MazeScanner {
   constructor(x = 1, y = 1){
     this.x = x;
     this.y = y;
@@ -28,11 +28,10 @@ class MazeGenerator {
     this.turn('left');
     let pCorner = [pMid[0]+ (this.dir[0]/2), pMid[1] + (this.dir[1]/2)]
     this.turn('right');
-    //console.log(pMid)
 
     return [pCorner, pMid];
   }
 
 }
 
-export default MazeGenerator;
+export default MazeScanner;
