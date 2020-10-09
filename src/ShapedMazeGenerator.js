@@ -22,7 +22,9 @@ class ShapedMazeGenerator {
        let moves = this.getPossibleMoves(curPos, visited);
        if(moves.length > 0){
          let chosen = Math.floor(Math.random()*moves.length);
-         stack.push({x:curPos.x, y:curPos.y})
+         if(moves.length > 1){
+           stack.push({x:curPos.x, y:curPos.y})
+         }
          for(let i=0; i<2; i++){
            curPos = {x:curPos.x+(moves[chosen].x/2) ,y:curPos.y+(moves[chosen].y/2) }
            visited[curPos.y][curPos.x] = 2;
