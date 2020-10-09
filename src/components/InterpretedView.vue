@@ -48,7 +48,7 @@ export default {
         sketch.loadPixels();
         sketch.background("black");
         let d = sketch.pixelDensity();
-        let unitSize = Math.ceil(this.imgSize/Math.min(this.mazeWidth, this.mazeHeight));
+        let unitSize = (this.imgSize/Math.min(this.mazeWidth, this.mazeHeight));
         for(let yi = 0; yi < this.mazeHeight; yi++){
           let shapeRow = []
           for(let xi = 0; xi < this.mazeWidth; xi++){
@@ -65,7 +65,7 @@ export default {
             }
             if(pixSum > (unitSize*unitSize)/2 ){
               shapeRow.push(0)
-              sketch.rect(xi*(unitSize), yi*(unitSize), unitSize, unitSize)
+              sketch.rect(xi*unitSize, yi*unitSize, unitSize, unitSize)
             }else{
               shapeRow.push(1)
             }
@@ -78,7 +78,9 @@ export default {
     },
 
     getPixelIndex(x, y, cWidth, d){
-      return ( 4*( (cWidth*(y*d) ) + (x*d) ) )
+      let actualY = Math.round(y*d);
+      let actualX = Math.round(x*d);
+      return 4*(cWidth*actualY + actualX)
     },
 
   }
