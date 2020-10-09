@@ -10,8 +10,6 @@ One Line is a simple project I made which was inspired by the artist TFoust10 in
 
 -output detail is only updated when an image is uploaded, not when refreshed
 
--output svg is scaled down
-
 ## Project Setup
 ```
 npm install
