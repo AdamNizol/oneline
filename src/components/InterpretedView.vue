@@ -12,12 +12,25 @@ export default {
     "vue-p5": VueP5
   },
   name: "InterpretedView",
-  props: ['mazeWidth', 'mazeHeight'],
+  props: {
+    mazeWidth:{},
+    mazeHeight:{},
+    refresh: {
+      default: false
+    }
+  },
   data(){
     return{
       p5sketch: null,
       img: null,
       imgSize: 400,
+    }
+  },
+  watch: {
+    refresh: function(val){
+      if(val){
+        this.p5sketch.loop();
+      }
     }
   },
   methods: {

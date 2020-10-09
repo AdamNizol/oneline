@@ -20,18 +20,18 @@
     </div>
 
     <div class="row">
-      <InterpretedView :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" @updateShape="updateShape" />
+      <InterpretedView :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" @updateShape="updateShape" :refresh="refreshImg" />
       <MazeView :value="maze" :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" />
       <div class="svgRep">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
-          <path :d="pathSvg" stroke="black" :stroke-width="1-(mazeDetail/220)" fill="none" />
+          <path :d="pathSvg" stroke="black" :stroke-width="1-(previousDetailLvl/220)" fill="none" />
         </svg>
       </div>
 
       <div class="overlaid">
         <div class="svgRep" :style="'background-color: '+wallCol">
           <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
-            <path :d="pathSvg" :stroke="lineCol" :stroke-width="1-(mazeDetail/220)" :fill="pathCol" />
+            <path :d="pathSvg" :stroke="lineCol" :stroke-width="1-(previousDetailLvl/220)" :fill="pathCol" />
           </svg>
         </div>
 
@@ -61,7 +61,9 @@ export default {
       pathCol: '#D01F1F',
       wallCol: '#400A0A',
       lineCol: '#FFC0CB',
-      shape: null
+      shape: null,
+      refreshImg: false,
+      previousDetailLvl: mazeDetail,
     }
   },
   computed: {
@@ -147,7 +149,11 @@ export default {
         this.maze = maze;
       }else{
         if(this.shape){
-          this.updateShape(this.shape);
+          if(this.previousDetailLvl != this.mazeDetail){
+            this.refreshImg = true;
+          }else{
+            this.updateShape(this.shape);
+          }
         }else{
           this.maze = MazeGenerator.generateMaze(this.mazeWidth, this.mazeHeight);
         }
@@ -165,6 +171,8 @@ export default {
       return [1, 1] //no path
     },
     updateShape(newShape){
+      this.previousDetailLvl = this.mazeDetail
+      if(this.refreshImg){this.refreshImg=false}
       this.shape = newShape
 
       let shapeCopy = [];
