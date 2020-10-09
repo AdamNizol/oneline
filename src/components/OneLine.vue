@@ -24,14 +24,14 @@
       <MazeView :value="maze" :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" />
       <div class="svgRep">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
-          <path :d="pathSvg" stroke="black" :stroke-width="1-(previousDetailLvl/220)" fill="none" />
+          <path :d="pathSvg + 'Z'" stroke="black" :stroke-width="1-(previousDetailLvl/220)" fill="none" />
         </svg>
       </div>
 
       <div class="overlaid">
         <div class="svgRep" :style="'background-color: '+wallCol">
           <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
-            <path :d="pathSvg" :stroke="lineCol" :stroke-width="1-(previousDetailLvl/220)" :fill="pathCol" />
+            <path :d="pathSvg + 'Z'" :stroke="lineCol" :stroke-width="1-(previousDetailLvl/220)" :fill="pathCol" />
           </svg>
         </div>
 
@@ -75,7 +75,7 @@ export default {
 
       let mScan = new MazeScanner( ...this.getPathTile(this.maze) );
       let start = [mScan.x, mScan.y]
-      let result = [ [unitW*start[0], unitH*start[1]] ];
+      let result = [ [unitW*start[0], unitH*(start[1]+1) ] ];
 
       let timesVisitingStart = 0;
       let timeVisitingStartRequired = 0;
