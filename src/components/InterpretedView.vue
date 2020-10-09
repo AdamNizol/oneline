@@ -40,6 +40,9 @@ export default {
       sketch.resizeCanvas(this.imgSize, this.imgSize);
       sketch.background("black");
       let fileInput = sketch.createFileInput((file) => {
+        if(this.img){
+          this.img.remove();
+        }
         this.img = sketch.createImg(file.data,'');
         this.img.hide();
         sketch.loop();
