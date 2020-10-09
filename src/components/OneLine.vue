@@ -2,14 +2,15 @@
   <div class="mazeContainer">
     <div class="controls">
       <div class="controlRow">
-        <p>Path Colour:</p>
-        <input type="color" v-model="pathCol" />
-
-        <p>Wall Colour:</p>
-        <input type="color" v-model="wallCol" />
-
         <p>Line Colour:</p>
         <input type="color" v-model="lineCol" />
+
+        <p>Fill Colour:</p>
+        <input type="color" v-model="pathCol" />
+
+        <p>Background:</p>
+        <input type="color" v-model="wallCol" />
+
 
         <button style="margin-left: 1em;" @click="newMaze()">Refresh</button>
       </div>
@@ -206,7 +207,7 @@ export default {
 .svgRep{
   width: min(400px, 100vw);
   height: min(400px, 100vw);
-  background-color: #ddd//rgb(100,100,130);
+  background-color: #eee//rgb(100,100,130);
 }
 .svgRepOverlay{
   width: min(400px, 100vw);
