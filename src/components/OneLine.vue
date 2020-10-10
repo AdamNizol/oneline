@@ -1,18 +1,19 @@
 <template>
   <div class="mazeContainer">
     <div class="controls">
+
       <div class="controlRow">
-        <p>Line Colour:</p>
-        <input type="color" v-model="lineCol" />
+        <p>Output:</p>
+        <select v-model="outputType" >
+          <option value="coloured" >Coloured</option>
+          <option value="maze" >Maze</option>
+          <option value="bw" >B&W</option>
+        </select>
 
-        <p>Fill Colour:</p>
-        <input type="color" v-model="pathCol" />
+        <p>Size:</p>
+        <input type="range" v-model="outputSize"  min="400" max="1000" step="1"  style="width:200px"/>
+        <input type="number" v-model="outputSize" style="width: 4em"/>
 
-        <p>Background:</p>
-        <input type="color" v-model="wallCol" />
-
-
-        <button style="margin-left: 1em;" @click="newMaze()">Refresh</button>
       </div>
 
       <div class="controlRow">
@@ -20,18 +21,18 @@
         <input type="range" v-model="mazeDetail" min="31" max="87" step="2"  style="width:400px"/>
       </div>
 
-      <div class="controlRow">
-        <p>Size</p>
-        <input type="range" v-model="outputSize"  min="400" max="1000" step="1"  style="width:200px"/>
-        <input type="number" v-model="outputSize" style="width: 4em"/>
+      <div class="controlRow" v-show="outputType=='coloured'">
+        <p>Line:</p>
+        <input type="color" v-model="lineCol" />
 
-        <p>Output:</p>
-        <select v-model="outputType" >
-          <option value="default" >Default</option>
-          <option value="maze" >Maze</option>
-          <option value="bw" >B&W</option>
-        </select>
+        <p>Fill:</p>
+        <input type="color" v-model="pathCol" />
+
+        <p>Background:</p>
+        <input type="color" v-model="wallCol" />
       </div>
+
+      <button style="margin-left: 1em; height: 2.5em; font-weight: bold; margin-top:0.5em;" @click="newMaze()">Refresh</button>
 
     </div>
 
@@ -45,7 +46,7 @@
         </svg>
       </div>
 
-      <div class="svgRep" :style="'width:'+outputSize+'px;height:'+outputSize+'px;'+'background-color: '+wallCol" v-if="outputType=='default'">
+      <div class="svgRep" :style="'width:'+outputSize+'px;height:'+outputSize+'px;'+'background-color: '+wallCol" v-if="outputType=='coloured'">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
           <path :d="pathSvg + 'Z'" :stroke="lineCol" :stroke-width="1-(previousDetailLvl/220)" :fill="pathCol" />
         </svg>
@@ -79,7 +80,7 @@ export default {
       shape: null,
       refreshImg: false,
       previousDetailLvl: mazeDetail,
-      outputType: "default",
+      outputType: "bw",
       outputSize: 400,
     }
   },
@@ -203,7 +204,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .mazeContainer {
   display: flex;
@@ -224,18 +224,23 @@ export default {
 .svgRep{
   width: min(400px, 100vw);
   height: min(400px, 100vw);
-  background-color: #eee//rgb(100,100,130);
+  background-color: #eee
 }
 .controls {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(140,140,140);
-  border-radius: 2px;
+  background-color: #8b8b8b;
+  border: 1px solid #555;
+  border-top: 0;
+  border-radius: 0 0 3px 3px;
   padding: 6px 6px 0 0;
   p {
       font-weight: bold;
-      margin-left: 0.3em;
+      margin-left: 0.4em;
+      margin-right: 0.2em;
+      margin-top: 0.2em;
+      margin-bottom: 0.2em;
   }
   >p {
     margin: 0;
