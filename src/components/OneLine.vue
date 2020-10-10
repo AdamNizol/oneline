@@ -15,28 +15,42 @@
         <button style="margin-left: 1em;" @click="newMaze()">Refresh</button>
       </div>
 
-      <p>Detail:</p>
-      <input type="range" v-model="mazeDetail" min="31" max="87" step="2"  style="width:400px"/>
+      <div class="controlRow">
+        <p>Detail:</p>
+        <input type="range" v-model="mazeDetail" min="31" max="87" step="2"  style="width:400px"/>
+      </div>
+
+      <div class="controlRow">
+        <p>Size</p>
+        <input type="range" v-model="outputSize"  min="400" max="1000" step="1"  style="width:200px"/>
+        <input type="number" v-model="outputSize" style="width: 4em"/>
+
+        <p>Output:</p>
+        <select v-model="outputType" >
+          <option value="default" >Default</option>
+          <option value="maze" >Maze</option>
+          <option value="bw" >B&W</option>
+        </select>
+      </div>
 
     </div>
 
+    <InterpretedView :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" @updateShape="updateShape" :refresh="refreshImg" />
+
     <div class="row">
-      <InterpretedView :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" @updateShape="updateShape" :refresh="refreshImg" />
-      <MazeView :value="maze" :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" />
-      <div class="svgRep">
+      <MazeView v-if="outputType=='maze'" :value="maze" :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" :style="'width:'+outputSize+'px;height:'+outputSize+'px;'"/>
+      <div class="svgRep" v-if="outputType=='bw'" :style="'width:'+outputSize+'px;height:'+outputSize+'px;'">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
           <path :d="pathSvg + 'Z'" stroke="black" :stroke-width="1-(previousDetailLvl/220)" fill="none" />
         </svg>
       </div>
 
-      <div class="overlaid">
-        <div class="svgRep" :style="'background-color: '+wallCol">
-          <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
-            <path :d="pathSvg + 'Z'" :stroke="lineCol" :stroke-width="1-(previousDetailLvl/220)" :fill="pathCol" />
-          </svg>
-        </div>
-
+      <div class="svgRep" :style="'width:'+outputSize+'px;height:'+outputSize+'px;'+'background-color: '+wallCol" v-if="outputType=='default'">
+        <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
+          <path :d="pathSvg + 'Z'" :stroke="lineCol" :stroke-width="1-(previousDetailLvl/220)" :fill="pathCol" />
+        </svg>
       </div>
+
     </div>
 
   </div>
@@ -65,6 +79,8 @@ export default {
       shape: null,
       refreshImg: false,
       previousDetailLvl: mazeDetail,
+      outputType: "default",
+      outputSize: 400,
     }
   },
   computed: {
@@ -193,6 +209,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
 }
 .row {
   display: flex;
@@ -209,21 +226,13 @@ export default {
   height: min(400px, 100vw);
   background-color: #eee//rgb(100,100,130);
 }
-.svgRepOverlay{
-  width: min(400px, 100vw);
-  height: min(400px, 100vw);
-  position: absolute;
-}
-.overlaid {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
 .controls {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: rgb(140,140,140);
+  border-radius: 2px;
+  padding: 6px 6px 0 0;
   p {
       font-weight: bold;
       margin-left: 0.3em;
