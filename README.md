@@ -1,7 +1,9 @@
 # One Line
 ### [Live Demo](https://adamnizol.github.io/oneline/)
 
-One Line is a simple project I made which was inspired by the artist TFoust10 in which images are drawn and filled using a single line. In an attempt to get the same effect I used a recursive maze generation algorithm to fill the space with a maze that had no loops. I then traced around it to get a single line fill.
+One Line is a project inspired by the art style of TFoust10, in which images are drawn and filled using a single line. In an attempt to get a similar effect, I used a recursive maze generation algorithm to fill the space with a maze that had no loops/cycles. I then traced around it to get a single line representation.
+
+![Pixelate the image](notes/example.png)
 
 ## Instructions
 
@@ -11,13 +13,13 @@ One Line is a simple project I made which was inspired by the artist TFoust10 in
 
 ## How it works
 
-### Step 1: The input image is pixelated at the specified detai level
+### Step 1: The input image is pixelated at the specified detail level
 ![Pixelate the image](notes/process1.png)
 
-### Step 3: The pixelated region is transformed into a maze
+### Step 2: The pixelated region is transformed into a maze
 ![Make a make in the region](notes/process2.png)
 
-### Step 3: The perimeter of the maze is traced until it reached the start
+### Step 3: The perimeter of the maze is traced until it reaches the start
 ![Trace around the maze](notes/process3.png)
 
 ## Project Setup
