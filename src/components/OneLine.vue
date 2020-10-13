@@ -18,7 +18,7 @@
 
       <div class="controlRow">
         <p>Detail:</p>
-        <input type="range" v-model="mazeDetail" min="31" max="87" step="2"  style="width:400px"/>
+        <input type="range" v-model="mazeDetail" min="31" max="87" step="2"  style="width:29.5em"/>
       </div>
 
       <div class="controlRow" v-show="outputType=='coloured'">
@@ -32,20 +32,26 @@
         <input type="color" v-model="wallCol" />
       </div>
 
-      <button style="margin-left: 1em; height: 2.5em; font-weight: bold; margin-top:0.5em;" @click="newMaze()">Refresh</button>
-
+      <div class="refreshRow">
+        <div></div>
+        <button @click="newMaze()">Refresh</button>
+      </div>
     </div>
 
     <InterpretedView :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" @updateShape="updateShape" :refresh="refreshImg" />
 
     <div class="row">
+      <!-- Maze view -->
       <MazeView v-if="outputType=='maze'" :value="maze" :mazeWidth="mazeWidth" :mazeHeight="mazeHeight" :style="'width:'+outputSize+'px;height:'+outputSize+'px;'"/>
+
+      <!-- Black & White view -->
       <div class="svgRep" v-if="outputType=='bw'" :style="'width:'+outputSize+'px;height:'+outputSize+'px;'">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
           <path :d="pathSvg + 'Z'" stroke="black" :stroke-width="1-(previousDetailLvl/220)" fill="none" />
         </svg>
       </div>
 
+      <!-- Coloured view -->
       <div class="svgRep" :style="'width:'+outputSize+'px;height:'+outputSize+'px;'+'background-color: '+wallCol" v-if="outputType=='coloured'">
         <svg viewBox="0 0 100 100" style="height: 100%; width: 100%" preserveAspectRatio="none" >
           <path :d="pathSvg + 'Z'" :stroke="lineCol" :stroke-width="1-(previousDetailLvl/220)" :fill="pathCol" />
@@ -234,10 +240,10 @@ export default {
   border: 1px solid #555;
   border-top: 0;
   border-radius: 0 0 3px 3px;
-  padding: 6px 6px 0 0;
+  padding: 4px;
   p {
       font-weight: bold;
-      margin-left: 0.4em;
+      margin-left: 0.2em;
       margin-right: 0.2em;
       margin-top: 0.2em;
       margin-bottom: 0.2em;
@@ -249,7 +255,20 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+  }
+  .refreshRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    button{
+      margin: 0;
+      height: 2.5em;
+      font-weight: bold;
+      margin-top:0.5em;
+    }
+    width: 100%;
   }
 }
 </style>
