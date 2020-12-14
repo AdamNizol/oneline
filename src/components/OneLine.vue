@@ -103,16 +103,16 @@ export default {
 
       let timesVisitingStart = 0;
       let timeVisitingStartRequired = 0;
-      if(this.maze[mScan.x+1][mScan.y]){
+      if(!this.maze[mScan.x+1][mScan.y]){
         timeVisitingStartRequired ++;
       }
-      if(this.maze[mScan.x-1][mScan.y]){
+      if(!this.maze[mScan.x-1][mScan.y]){
         timeVisitingStartRequired ++;
       }
-      if(this.maze[mScan.x][mScan.y+1]){
+      if(!this.maze[mScan.x][mScan.y+1]){
         timeVisitingStartRequired ++;
       }
-      if(this.maze[mScan.x][mScan.y-1]){
+      if(!this.maze[mScan.x][mScan.y-1]){
         timeVisitingStartRequired ++;
       }
 
