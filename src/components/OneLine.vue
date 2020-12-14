@@ -21,6 +21,11 @@
         <input type="range" v-model="mazeDetail" min="31" max="87" step="2"  style="width:29.5em"/>
       </div>
 
+      <div class="controlRow" v-show="outputType=='coloured' || outputType=='bw'">
+        <p>Noise:</p>
+        <input type="range" v-model="noisePercentage" min="0" max="100" step="1" style="width:29.5em" />
+      </div>
+
       <div class="controlRow" v-show="outputType=='coloured'">
         <p>Line:</p>
         <input type="color" v-model="lineCol" />
@@ -69,6 +74,7 @@ import MazeGenerator from '@/MazeGenerator';
 import ShapedMazeGenerator from '@/ShapedMazeGenerator';
 import MazeScanner from '@/MazeScanner';
 import InterpretedView from './InterpretedView.vue';
+let Noise = require('noisejs').Noise;
 
 export default {
   name: 'OneLine',
@@ -88,6 +94,7 @@ export default {
       previousDetailLvl: mazeDetail,
       outputType: "bw",
       outputSize: 400,
+      noisePercentage: 20,
     }
   },
   computed: {
@@ -103,19 +110,18 @@ export default {
 
       let timesVisitingStart = 0;
       let timeVisitingStartRequired = 0;
-      if(this.maze[mScan.x+1][mScan.y]){
+      if(!this.maze[mScan.x+1][mScan.y]){
         timeVisitingStartRequired ++;
       }
-      if(this.maze[mScan.x-1][mScan.y]){
+      if(!this.maze[mScan.x-1][mScan.y]){
         timeVisitingStartRequired ++;
       }
-      if(this.maze[mScan.x][mScan.y+1]){
+      if(!this.maze[mScan.x][mScan.y+1]){
         timeVisitingStartRequired ++;
       }
-      if(this.maze[mScan.x][mScan.y-1]){
+      if(!this.maze[mScan.x][mScan.y-1]){
         timeVisitingStartRequired ++;
       }
-
 
       while( !(mScan.x == start[0] && mScan.y == start[1] && timesVisitingStart == timeVisitingStartRequired) ){
         if(mScan.x == start[0] && mScan.y == start[1]){
@@ -150,11 +156,35 @@ export default {
     pathSvg: function(){
       let result = "M ";
       if(this.path.length > 1){
+        let height = this.maze.length;
+        let width = this.maze[0].length;
+        let unitH = 100/height;
+        let unitW = 100/width;
+        let noise = new Noise(Math.random());
+        console.log(noise.perlin2(0.1, 2.4))
+
         result += this.path[0][0] + ' ' + this.path[0][1];
         result += " S ";
         for(let i=1; i< this.path.length; i++){
-          result += this.path[i][0] + ' ' + this.path[i][1] + ' ';
+          let px = this.path[i][0];
+          let py = this.path[i][1];
+
+          if(i == this.path.length-1){
+            py += noise.perlin2(2/20, 2/20)*(this.noisePercentage/100)
+            px += noise.perlin2(10 + 2/20, 2/20)*(this.noisePercentage/100)
+          }else if(i == this.path.length-2){
+            py += noise.perlin2(1/20, 1/20)*(this.noisePercentage/100)
+            px += noise.perlin2(10 + 1/20, 1/20)*(this.noisePercentage/100)
+          }else{
+            py += noise.perlin2(i/20, i/20)*(this.noisePercentage/100)
+            px += noise.perlin2(10 + i/20, i/20)*(this.noisePercentage/100)
+          }
+
+          //console.log(noise.perlin2(i/10))
+          result += px + ' ' + py + ' ';
         }
+
+        result += this.path[0][0] + ' ' + this.path[0][1] + ' ' + this.path[1][0] + ' ' + this.path[1][1];
       }
 
       return result;
